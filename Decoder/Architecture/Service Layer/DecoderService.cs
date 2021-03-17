@@ -32,7 +32,7 @@ namespace Decoder.Architecture.ServiceLayer
                             for (var index = 0; index < properties.Length; index++)
                                 parameters[index] = Read(stream);
 
-                        return new Sensor<dynamic>(Guid.NewGuid(), payload)
+                        var sensor = new Sensor<dynamic>(Guid.NewGuid(), payload)
                         {
                             Device = device,
                             Measurements = new LevelSensor()
@@ -42,6 +42,8 @@ namespace Decoder.Architecture.ServiceLayer
                                 Voltage = new Voltage(parameters[2], "V")
                             }
                         };
+
+                        return sensor;
                     }
 
                     break;
@@ -54,17 +56,19 @@ namespace Decoder.Architecture.ServiceLayer
                         for (var index = 0; index < properties.Length; index++)
                             parameters[index] = Read(stream);
 
-                        return new Sensor<dynamic>(new Guid(), payload)
+                        var sensor = new Sensor<dynamic>(new Guid(), payload)
                         {
                             Device = device,
                             Measurements = new SoilSensor()
                             {
                                 Permittivity = new Permittivity(parameters[0]),
-                                WaterContent = new WaterContent(parameters[1], "m³⋅m⁻³"),
-                                Temperature = new Temperature(parameters[2], "°C"),
-                                Voltage = new Voltage(parameters[3], "V")
+                                WaterContent = new WaterContent(parameters[0], "m³⋅m⁻³"),
+                                Temperature = new Temperature(parameters[1], "°C"),
+                                Voltage = new Voltage(parameters[2], "V")
                             }
                         };
+
+                        return sensor;
                     }
                     
                     break;
